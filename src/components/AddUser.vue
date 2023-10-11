@@ -70,7 +70,6 @@ export default {
             this.closeModal()
         },
         telephoneInput(e){
-            console.log(e);
             this.phoneValue = formattedTelephone(e)
         },
         flatTree(tree, level = 0) {

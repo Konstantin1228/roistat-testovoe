@@ -6,13 +6,15 @@ import Fragment from 'vue-fragment'
 
 import './styles/reset.css'
 import './styles/style.css'
+import clickOutside from './directives/click-outside'
 
 Vue.config.productionTip = false
 Vue.use(Fragment.Plugin)
+Vue.use(clickOutside)
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
 })
