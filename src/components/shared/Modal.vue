@@ -1,23 +1,22 @@
 <template>
     <transition name="modal-fade">
         <div v-if="visible" class="modal-backdrop">
-            <div class="modal" role="dialog"  v-click-outside="close">
+            <div class="modal" role="dialog" v-click-outside="closeModal">
                 <header class="modal-header">
                     <h1>{{ title }}</h1>
-                    <button class="btn-close" @click="close">
+                    <button class="btn-close" @click="closeModal">
                         <img :src="closeImage" alt="close">
                     </button>
                 </header>
 
                 <slot />
             </div>
-        </div> 
+        </div>
     </transition>
 </template>
 <script>
 import closeImage from '../../images/close.svg'
 import Button from './Button.vue';
-
 
 export default {
     name: 'Modal',
@@ -25,17 +24,22 @@ export default {
         Button
     },
     props: {
-        close: { type: Function },
         visible: { required: true, type: Boolean },
         title: { required: true, type: String }
     },
-    data: () => {
+    emits:['close'],
+    data() {
         return { closeImage }
+    },
+    methods:{
+        closeModal(){
+            this.$emit('close')
+        }
     }
 };
 </script>
 
-<style>
+<style scoped>
 .modal-backdrop {
     position: fixed;
     top: 0;

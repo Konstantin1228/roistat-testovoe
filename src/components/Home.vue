@@ -1,7 +1,7 @@
 <template>
     <div>
-        <AddUser :treeData="treeData" v-on:updateData="updateTree" v-on:pushInTree="pushInTree" />
-        <Table :treeData="treeData" v-on:updateData="updateTree"/>
+        <AddUser :treeData="treeData" @updateData="updateTree" @pushInTree="pushInTree" />
+        <Table :treeData="treeData" @updateData="updateTree"/>
     </div>
 </template>
 <script>

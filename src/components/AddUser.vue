@@ -1,29 +1,29 @@
 <template>
     <div>
-        <div class="addButtonParent">
-            <Button :click="openModal">
+        <div class="add-button-parent">
+            <Button @click="openModal">
                 <img :src="plusSvg" alt="plus">
                 <span class="ml-1">Добавить</span>
             </Button>
         </div>
 
-        <Modal :visible="isModalVisible" :close="closeModal" title="Добавление пользователя">
+        <Modal :visible="isModalVisible" @close="closeModal" title="Добавление пользователя">
             <div class="modal-body">
                 <span class="modal-body-field-text">Имя</span>
-                <input v-model="nameValue" placeholder="Александр" class="modal-body-field-input" type="text">
+                <input v-model="formValues.name" placeholder="Александр" class="modal-body-field-input" type="text">
 
                 <span class="modal-body-field-text">Телефон</span>
-                <input v-model="phoneValue" placeholder="+7 (351) 240-04-40" @input="telephoneInput" class="modal-body-field-input" type="text">
+                <input v-model="formValues.phone" placeholder="+7 (351) 240-04-40" @input="telephoneInput" class="modal-body-field-input" type="text">
 
                 <span class="modal-body-field-text">Начальник</span>
-                <select class="select" v-model="chiefValue">
+                <select class="select" v-model="formValues.chief">
                     <option value="" selected>Отсутствует</option>
                     <option v-for="(item, index) in options" :key="index" :value="item">{{ item.name }}</option>
                 </select>
             </div>
 
             <footer class="modal-footer">
-                <Button class="" :size="14" :click="saveUser">Сохранить</Button>
+                <Button :size="14" @click="saveUser">Сохранить</Button>
             </footer>
         </Modal>
     </div>
@@ -46,21 +46,18 @@ export default {
     },
     emits: ['updateData', 'pushInTree'],
     data() {
-        const isModalVisible = false
-
-        const nameValue = ''
-        const phoneValue = ''
-        const chiefValue = ''
-
-        const options = this.flatTree(this.treeData)
-
-        return { options, isModalVisible, nameValue, phoneValue, chiefValue, plusSvg }
+        return {
+            options: this.flatTree(this.treeData),
+            isModalVisible: false,
+            formValues: { name: '', phone: '', chief: '', },
+            plusSvg
+        }
     },
     methods: {
         saveUser() {
-            const { nameValue: name, phoneValue: telephone, chiefValue } = this.$data
-            if (chiefValue) {
-                const newData = this.addNewDataToTree(this.treeData, chiefValue.id, { name, telephone, level: chiefValue.level + 1, children: [], id: this.$data.options.length + 1, expanded: true })
+            const { name, phone: telephone, chief } = this.formValues
+            if (chief) {
+                const newData = this.addNewDataToTree(this.treeData, chief.id, { name, telephone, level: chief.level + 1, children: [], id: this.$data.options.length + 1, expanded: true })
                 this.$emit('updateData', newData)
             } else {
                 this.$emit('pushInTree', { name, telephone, level: 0, children: [], id: this.$data.options.length + 1, expanded: true })
@@ -69,8 +66,8 @@ export default {
             this.clearForm()
             this.closeModal()
         },
-        telephoneInput(e){
-            this.phoneValue = formattedTelephone(e)
+        telephoneInput(e) {
+            this.formValues.phone = formattedTelephone(e)
         },
         flatTree(tree, level = 0) {
             let flattened = [];
@@ -106,12 +103,13 @@ export default {
             this.isModalVisible = false
         },
         clearForm() {
-            this.nameValue = ''
-            this.phoneValue = ''
-            this.chiefValue = ''
+            this.formValues = { name: '', phone: '', chief: '', }
         }
     },
     watch: {
+        'formValues.phone'(){
+            console.log(32131231);
+        },
         treeData: {
             handler() {
                 const treeData = this.treeData
@@ -123,7 +121,7 @@ export default {
 }
 </script>
 <style scoped>
-.addButtonParent {
+.add-button-parent {
     margin-left: auto;
     width: fit-content;
     margin-bottom: 20px;

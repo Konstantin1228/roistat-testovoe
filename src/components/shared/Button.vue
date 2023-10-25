@@ -1,5 +1,5 @@
 <template>
-    <button class="button" @click="click" :style="{ fontSize: size }">
+    <button class="button" @click="$emit('click')" :style="{ fontSize: size }">
         <slot />
     </button>
 </template>
@@ -8,8 +8,8 @@ export default {
     name: 'Button',
     props: {
         size: { type: Number, default: 20 },
-        click: { required: false, type: Function },
     },
+    emits: ['click'],
 }
 </script>
 <style scoped>
